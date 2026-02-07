@@ -1,161 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rose Day | For You</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #ff4d6d; --bg: #0a0a0a; --gold: #ffd700; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; touch-action: none; }
-        
-        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; text-align: center; }
-        .active { display: flex; animation: fadeIn 1s forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Day | A Journey Through Time</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff4d6d; --bg: #0a0a0a; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; }
+        
+        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; text-align: center; }
+        .active { display: flex; animation: fadeIn 1s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Stage 2: Photos */
-        .memory-img { position: absolute; border: 3px solid white; border-radius: 10px; object-fit: cover; z-index: 5; }
+        /* Stage 2: Photo Explosion */
+        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; }
+        .memory-img:hover { transform: scale(1.2) !important; z-index: 100; border-color: var(--primary); }
 
-        /* Stage 3: Scratch */
-        #scratch-container { position: relative; width: 300px; height: 400px; border: 3px solid var(--primary); border-radius: 15px; overflow: hidden; }
-        #scratch-canvas { position: absolute; top: 0; left: 0; z-index: 2; cursor: crosshair; }
-        .hidden-photo { width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+        /* Stage 4: CSS Animated Rose */
+        .rose-wrapper { position: relative; width: 100px; height: 100px; }
+        .petal { position: absolute; background: var(--primary); width: 50px; height: 80px; border-radius: 50% 50% 10% 10%; transform-origin: bottom center; transition: 2s ease-in-out; opacity: 0.8; border: 1px solid #a00; }
+        .rose-opened .petal:nth-child(1) { transform: rotate(30deg); }
+        .rose-opened .petal:nth-child(2) { transform: rotate(-30deg); }
+        .rose-opened .petal:nth-child(3) { transform: rotate(60deg); }
+        .rose-opened .petal:nth-child(4) { transform: rotate(-60deg); }
+        .rose-opened .petal:nth-child(5) { transform: rotate(0deg) scaleY(1.1); }
 
-        /* Stage 5: Realistic CSS Rose */
-        .rose-container { position: relative; width: 150px; height: 150px; margin-bottom: 50px; }
-        .petal { position: absolute; left: 50%; bottom: 0; background: linear-gradient(#ff4d6d, #800); width: 60px; height: 100px; border-radius: 50% 50% 20% 20%; transform-origin: bottom center; transition: 2.5s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
-        .rose-opened .petal { opacity: 1; }
-        /* Layered petals for thickness */
-        .rose-opened .p1 { transform: translateX(-50%) rotate(10deg); }
-        .rose-opened .p2 { transform: translateX(-50%) rotate(-10deg); }
-        .rose-opened .p3 { transform: translateX(-50%) rotate(40deg); }
-        .rose-opened .p4 { transform: translateX(-50%) rotate(-40deg); }
-        .rose-opened .p5 { transform: translateX(-50%) rotate(70deg); }
-        .rose-opened .p6 { transform: translateX(-50%) rotate(-70deg); }
-        .rose-opened .p7 { transform: translateX(-50%) scale(1.1); }
-
-        .btn { padding: 15px 40px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px var(--primary); }
-        .rose-item { position: absolute; cursor: pointer; font-size: 2rem; transition: 0.3s; }
-    </style>
+        /* Buttons */
+        .btn { padding: 15px 40px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px var(--primary); }
+    </style>
 </head>
 <body>
 
-    <div id="stage1" class="screen active">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--primary);">Happy Rose Day</h1>
-        <p>I’ve coded a journey for you. Ready?</p>
-        <button class="btn" onclick="nextStage(1, 2)">Start Journey</button>
-    </div>
+    <div id="stage1" class="screen active">
+        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">Hi [Her Name]...</h1>
+        <p>I built something special for you today.</p>
+        <button class="btn" onclick="nextStage(1, 2)">Enter Our World</button>
+    </div>
 
-    <div id="stage2" class="screen">
-        <h2>Our Moments Are Everywhere...</h2>
-        <div id="explosion-container"></div>
-        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 50px;">Look Closer</button>
-    </div>
+    <div id="stage2" class="screen">
+        <h2 style="position: relative; z-index: 1000;">Our Memories Bloom Everywhere</h2>
+        <div id="explosion-container"></div>
+        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 50px;">Look Deeper</button>
+    </div>
 
-    <div id="stage3" class="screen">
-        <h2>Wipe away the distance...</h2>
-        <div id="scratch-container">
-            <img src="https://picsum.photos/300/400?romantic=1" class="hidden-photo">
-            <canvas id="scratch-canvas"></canvas>
-        </div>
-        <button class="btn" onclick="nextStage(3, 4)" style="margin-top: 20px;">I Found You</button>
-    </div>
+    <div id="stage3" class="screen">
+        <h2>Find the Rose that holds my heart</h2>
+        <div id="garden"></div>
+    </div>
 
-    <div id="stage4" class="screen">
-        <h2>Find the Golden Rose to Bloom</h2>
-        <div id="garden"></div>
-    </div>
+    <div id="stage4" class="screen">
+        <div id="rose-box" class="rose-wrapper">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        </div>
+        <h2 id="bloom-text" style="margin-top: 150px;">Watch it bloom...</h2>
+        <button id="bloom-btn" class="btn" onclick="bloomRose()">Click to Bloom</button>
+    </div>
 
-    <div id="stage5" class="screen">
-        <div id="rose-box" class="rose-container">
-            <div class="petal p1"></div><div class="petal p2"></div>
-            <div class="petal p3"></div><div class="petal p4"></div>
-            <div class="petal p5"></div><div class="petal p6"></div>
-            <div class="petal p7"></div>
-        </div>
-        <h2 id="bloom-text">Your Love makes me bloom.</h2>
-        <button id="bloom-btn" class="btn" onclick="bloomRose()">Click to Bloom</button>
-    </div>
+    <div id="stage5" class="screen">
+        <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--primary);">
+            <h1 style="color: var(--primary); font-family: 'Dancing Script';">Happy Rose Day!</h1>
+            <p>"No matter how many miles apart we are, my heart is always in your garden."</p>
+            <p><strong>I love you!</strong></p>
+        </div>
+    </div>
 
-    <div id="stage6" class="screen">
-        <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; backdrop-filter: blur(15px); border: 2px solid var(--primary); max-width: 80%;">
-            <h1 style="color: var(--primary); font-family: 'Dancing Script';">You Are My Forever Rose</h1>
-            <p>"Distance means nothing when someone means everything."</p>
-            <p><strong>I love you more than words can say.</strong></p>
-        </div>
-    </div>
+    <script>
+        function nextStage(curr, next) {
+            document.getElementById('stage'+curr).classList.remove('active');
+            document.getElementById('stage'+next).classList.add('active');
+            if(next === 2) startExplosion();
+            if(next === 3) startGarden();
+        }
 
-    <script>
-        function nextStage(curr, next) {
-            document.getElementById('stage'+curr).classList.remove('active');
-            document.getElementById('stage'+next).classList.add('active');
-            if(next === 2) startExplosion();
-            if(next === 3) initScratch();
-            if(next === 4) startGarden();
-        }
+        // STAGE 2: Explosion Logic
+        function startExplosion() {
+            const container = document.getElementById('explosion-container');
+            for(let i=0; i<25; i++) {
+                const img = document.createElement('img');
+                // Use your actual image URLs here!
+                img.src = `https://picsum.photos/200/200?random=${i}`;
+                img.className = 'memory-img';
+                const size = Math.random() * 150 + 100;
+                img.style.width = size + 'px';
+                img.style.height = size + 'px';
+                img.style.left = Math.random() * 90 + 'vw';
+                img.style.top = Math.random() * 80 + 'vh';
+                img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+                container.appendChild(img);
+            }
+        }
 
-        function startExplosion() {
-            const container = document.getElementById('explosion-container');
-            for(let i=0; i<25; i++) {
-                const img = document.createElement('img');
-                img.src = `https://picsum.photos/200/200?random=${i}`;
-                img.className = 'memory-img';
-                img.style.width = (Math.random() * 100 + 100) + 'px';
-                img.style.left = Math.random() * 85 + 'vw';
-                img.style.top = Math.random() * 75 + 'vh';
-                img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
-                container.appendChild(img);
-            }
-        }
+        // STAGE 3: Garden Logic
+        function startGarden() {
+            const garden = document.getElementById('garden');
+            for(let i=0; i<40; i++) {
+                const r = document.createElement('span');
+                r.innerHTML = '🌹';
+                r.style.position = 'absolute';
+                r.style.left = Math.random() * 95 + 'vw';
+                r.style.top = Math.random() * 90 + 'vh';
+                r.style.fontSize = '2rem';
+                r.style.cursor = 'pointer';
+                r.onclick = () => { if(i === 15) { confetti(); setTimeout(() => nextStage(3, 4), 1000); } else { r.style.opacity = '0.1'; } };
+                garden.appendChild(r);
+            }
+        }
 
-        function initScratch() {
-            const canvas = document.getElementById('scratch-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 300; canvas.height = 400;
-            ctx.fillStyle = '#888';
-            ctx.fillRect(0, 0, 300, 400);
-            ctx.fillStyle = 'white';
-            ctx.font = '20px Poppins';
-            ctx.textAlign = 'center';
-            ctx.fillText('Wipe Here ❤️', 150, 200);
-
-            const scratch = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.pageX || e.touches[0].pageX) - rect.left;
-                const y = (e.pageY || e.touches[0].pageY) - rect.top;
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, 35, 0, Math.PI * 2);
-                ctx.fill();
-            };
-            canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('touchmove', scratch);
-        }
-
-        function startGarden() {
-            const garden = document.getElementById('garden');
-            for(let i=0; i<45; i++) {
-                const r = document.createElement('span');
-                r.innerHTML = '🌹';
-                r.className = 'rose-item';
-                if(i === 18) r.style.filter = 'drop-shadow(0 0 10px gold)';
-                r.style.left = Math.random() * 90 + 'vw';
-                r.style.top = Math.random() * 80 + 'vh';
-                r.onclick = () => {
-                    if(i === 18) { confetti(); setTimeout(() => nextStage(4, 5), 800); }
-                    else { r.style.opacity = '0.1'; }
-                };
-                garden.appendChild(r);
-            }
-        }
-
-        function bloomRose() {
-            document.getElementById('rose-box').classList.add('rose-opened');
-            document.getElementById('bloom-btn').style.display = 'none';
-            confetti({ particleCount: 200, spread: 80 });
-            setTimeout(() => nextStage(5, 6), 4000);
-        }
-    </script>
+        // STAGE 4: Bloom Logic
+        function bloomRose() {
+            document.getElementById('rose-box').classList.add('rose-opened');
+            document.getElementById('bloom-text').innerText = "It's for you.";
+            document.getElementById('bloom-btn').style.display = 'none';
+            confetti({ particleCount: 150, spread: 70 });
+            setTimeout(() => nextStage(4, 5), 3000);
+        }
+    </script>
 </body>
-</html>
+</html>   
