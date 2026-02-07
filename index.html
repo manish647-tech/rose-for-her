@@ -3,117 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rose Day | A Journey Through Time</title>
+    <title>Rose Day Journey</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff4d6d; --bg: #0a0a0a; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; }
-        
+        :root { --primary: #ff4d6d; --gold: #ffd700; --bg: #0a0a0a; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; touch-action: none; }
         .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; text-align: center; }
-        .active { display: flex; animation: fadeIn 1s forwards; }
+        .active { display: flex; animation: fadeIn 0.8s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Stage 2: Photo Explosion */
-        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; }
-        .memory-img:hover { transform: scale(1.2) !important; z-index: 100; border-color: var(--primary); }
+        /* Stage 1: The Golden Rose */
+        .rose-item { position: absolute; font-size: 2rem; cursor: pointer; transition: 0.3s; }
+        .golden { filter: drop-shadow(0 0 15px var(--gold)); font-size: 2.5rem; }
 
-        /* Stage 4: CSS Animated Rose */
+        /* Stage 2: Photos */
+        .memory-img { position: absolute; border: 4px solid white; border-radius: 10px; object-fit: cover; z-index: 5; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        /* Stage 3: Scratch to Reveal */
+        #scratch-container { position: relative; width: 300px; height: 400px; border: 2px solid var(--primary); }
+        #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 2; }
+        .hidden-photo { width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+
+        /* Stage 4: Rose Bloom */
         .rose-wrapper { position: relative; width: 100px; height: 100px; }
-        .petal { position: absolute; background: var(--primary); width: 50px; height: 80px; border-radius: 50% 50% 10% 10%; transform-origin: bottom center; transition: 2s ease-in-out; opacity: 0.8; border: 1px solid #a00; }
-        .rose-opened .petal:nth-child(1) { transform: rotate(30deg); }
-        .rose-opened .petal:nth-child(2) { transform: rotate(-30deg); }
-        .rose-opened .petal:nth-child(3) { transform: rotate(60deg); }
-        .rose-opened .petal:nth-child(4) { transform: rotate(-60deg); }
-        .rose-opened .petal:nth-child(5) { transform: rotate(0deg) scaleY(1.1); }
+        .petal { position: absolute; background: var(--primary); width: 50px; height: 80px; border-radius: 50% 50% 10% 10%; transform-origin: bottom center; transition: 2s ease-in-out; opacity: 0.9; }
+        .rose-opened .petal:nth-child(1) { transform: rotate(40deg); }
+        .rose-opened .petal:nth-child(2) { transform: rotate(-40deg); }
+        .rose-opened .petal:nth-child(3) { transform: rotate(70deg); }
+        .rose-opened .petal:nth-child(4) { transform: rotate(-70deg); }
+        .rose-opened .petal:nth-child(5) { transform: rotate(0) scale(1.1); }
 
-        /* Buttons */
-        .btn { padding: 15px 40px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px var(--primary); }
+        .btn { padding: 12px 30px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 0 15px var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="stage1" class="screen active">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">Hi [Her Name]...</h1>
-        <p>I built something special for you today.</p>
-        <button class="btn" onclick="nextStage(1, 2)">Enter Our World</button>
+        <h1>Find the Golden Rose</h1>
+        <p>Among 50 roses, only one opens the door...</p>
+        <div id="garden"></div>
     </div>
 
     <div id="stage2" class="screen">
-        <h2 style="position: relative; z-index: 1000;">Our Memories Bloom Everywhere</h2>
-        <div id="explosion-container"></div>
-        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 50px;">Look Deeper</button>
+        <h2>Our Moments Bloom...</h2>
+        <div id="explosion"></div>
+        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 40px;">Wipe Away the Distance</button>
     </div>
 
     <div id="stage3" class="screen">
-        <h2>Find the Rose that holds my heart</h2>
-        <div id="garden"></div>
+        <h2>Rub the screen to find us</h2>
+        <div id="scratch-container">
+            <img src="https://picsum.photos/300/400?romantic=1" class="hidden-photo">
+            <canvas id="scratch-canvas"></canvas>
+        </div>
+        <button class="btn" onclick="nextStage(3, 4)" style="margin-top: 20px;">Open the Gift</button>
     </div>
 
     <div id="stage4" class="screen">
         <div id="rose-box" class="rose-wrapper">
             <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
         </div>
-        <h2 id="bloom-text" style="margin-top: 150px;">Watch it bloom...</h2>
-        <button id="bloom-btn" class="btn" onclick="bloomRose()">Click to Bloom</button>
+        <button id="bloom-btn" class="btn" style="margin-top: 150px;" onclick="bloom()">Click to Bloom</button>
     </div>
 
     <div id="stage5" class="screen">
-        <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--primary);">
-            <h1 style="color: var(--primary); font-family: 'Dancing Script';">Happy Rose Day!</h1>
-            <p>"No matter how many miles apart we are, my heart is always in your garden."</p>
-            <p><strong>I love you!</strong></p>
+        <div style="padding: 30px; border: 1px solid var(--primary); background: rgba(255,255,255,0.05); border-radius: 20px;">
+            <h1 style="color: var(--primary);">Happy Rose Day!</h1>
+            <p>"Distance is just a test to see how far love can travel."</p>
+            <p><strong>I Love You, [Her Name]</strong></p>
         </div>
     </div>
 
     <script>
-        function nextStage(curr, next) {
-            document.getElementById('stage'+curr).classList.remove('active');
-            document.getElementById('stage'+next).classList.add('active');
-            if(next === 2) startExplosion();
-            if(next === 3) startGarden();
+        function nextStage(c, n) {
+            document.getElementById('stage'+c).classList.remove('active');
+            document.getElementById('stage'+n).classList.add('active');
+            if(n === 2) setupExplosion();
+            if(n === 3) setupScratch();
         }
 
-        // STAGE 2: Explosion Logic
-        function startExplosion() {
-            const container = document.getElementById('explosion-container');
+        // STAGE 1: GOLDEN ROSE
+        const garden = document.getElementById('garden');
+        for(let i=0; i<50; i++) {
+            const r = document.createElement('div');
+            r.className = 'rose-item' + (i === 21 ? ' golden' : '');
+            r.innerHTML = '🌹';
+            r.style.left = Math.random() * 90 + 'vw';
+            r.style.top = Math.random() * 80 + 'vh';
+            r.onclick = () => {
+                if(i === 21) {
+                    confetti();
+                    setTimeout(() => nextStage(1, 2), 1000);
+                } else { r.style.opacity = '0.1'; }
+            };
+            garden.appendChild(r);
+        }
+
+        // STAGE 2: EXPLOSION
+        function setupExplosion() {
+            const container = document.getElementById('explosion');
             for(let i=0; i<25; i++) {
-                const img = document.createElement('img');
-                // Use your actual image URLs here!
-                img.src = `https://picsum.photos/200/200?random=${i}`;
-                img.className = 'memory-img';
-                const size = Math.random() * 150 + 100;
-                img.style.width = size + 'px';
-                img.style.height = size + 'px';
-                img.style.left = Math.random() * 90 + 'vw';
-                img.style.top = Math.random() * 80 + 'vh';
-                img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
-                container.appendChild(img);
+                setTimeout(() => {
+                    const img = document.createElement('img');
+                    img.src = `https://picsum.photos/200/200?random=${i}`;
+                    img.className = 'memory-img';
+                    img.style.width = (Math.random() * 100 + 100) + 'px';
+                    img.style.left = Math.random() * 80 + 'vw';
+                    img.style.top = Math.random() * 70 + 'vh';
+                    img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+                    container.appendChild(img);
+                }, i * 100);
             }
         }
 
-        // STAGE 3: Garden Logic
-        function startGarden() {
-            const garden = document.getElementById('garden');
-            for(let i=0; i<40; i++) {
-                const r = document.createElement('span');
-                r.innerHTML = '🌹';
-                r.style.position = 'absolute';
-                r.style.left = Math.random() * 95 + 'vw';
-                r.style.top = Math.random() * 90 + 'vh';
-                r.style.fontSize = '2rem';
-                r.style.cursor = 'pointer';
-                r.onclick = () => { if(i === 15) { confetti(); setTimeout(() => nextStage(3, 4), 1000); } else { r.style.opacity = '0.1'; } };
-                garden.appendChild(r);
-            }
+        // STAGE 3: SCRATCH LOGIC
+        function setupScratch() {
+            const canvas = document.getElementById('scratch-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 300; canvas.height = 400;
+            ctx.fillStyle = '#444';
+            ctx.fillRect(0, 0, 300, 400);
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Scratch Here ❤️', 150, 200);
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            const scratch = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.pageX || e.touches[0].pageX) - rect.left;
+                const y = (e.pageY || e.touches[0].pageY) - rect.top;
+                ctx.beginPath();
+                ctx.arc(x, y, 30, 0, Math.PI * 2);
+                ctx.fill();
+            };
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', scratch);
         }
 
-        // STAGE 4: Bloom Logic
-        function bloomRose() {
+        // STAGE 4: BLOOM
+        function bloom() {
             document.getElementById('rose-box').classList.add('rose-opened');
-            document.getElementById('bloom-text').innerText = "It's for you.";
             document.getElementById('bloom-btn').style.display = 'none';
-            confetti({ particleCount: 150, spread: 70 });
+            confetti({particleCount: 200});
             setTimeout(() => nextStage(4, 5), 3000);
         }
     </script>
