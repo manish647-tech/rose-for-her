@@ -17,9 +17,9 @@
         /* Stage 1: Golden Rose Garden */
         .rose-item { position: absolute; cursor: pointer; font-size: 2rem; transition: 0.3s; user-select: none; }
 
-        /* Stage 2: Photo Explosion (34 Photos) */
-        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; background: white; padding: 5px 5px 15px 5px; max-width: 150px; }
-        .memory-img:hover { transform: scale(1.4) !important; z-index: 100; border-color: var(--primary); }
+        /* Stage 2: Photo Explosion (39 Photos) */
+        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; background: white; padding: 5px 5px 15px 5px; max-width: 130px; }
+        .memory-img:hover { transform: scale(1.5) !important; z-index: 100; border-color: var(--primary); }
 
         /* Stage 3: Scratch Reveal */
         #scratch-container { position: relative; width: 280px; height: 380px; border: 3px solid var(--primary); border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px var(--primary); }
@@ -51,7 +51,7 @@
     </div>
 
     <div id="stage2" class="screen">
-        <h2 style="position: relative; z-index: 1000; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 10px;">Our Memories Bloom Everywhere</h2>
+        <h2 style="position: relative; z-index: 1000; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 15px;">Our Memories Bloom Everywhere</h2>
         <div id="explosion-container"></div>
         <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 40px;">Look Deeper</button>
     </div>
@@ -86,7 +86,7 @@
         <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--primary); max-width: 80%;">
             <h1 style="color: var(--primary); font-family: 'Dancing Script'; font-size: 3rem;">Happy Rose Day!</h1>
             <p>"No matter how many miles apart we are, my heart is always in your garden."</p>
-            <p><strong>I love you, Bannu babu!</strong></p>
+            <p><strong>I love you, Bannu!</strong></p>
         </div>
     </div>
 
@@ -98,7 +98,7 @@
             if(next === 3) initScratch();
         }
 
-        // STAGE 1: SEARCH
+        // STAGE 1
         const garden = document.getElementById('garden');
         for(let i=0; i<45; i++) {
             const r = document.createElement('span');
@@ -117,35 +117,34 @@
             garden.appendChild(r);
         }
 
-        // STAGE 2: 34 PHOTOS
+        // STAGE 2: UPDATED FOR 39 PHOTOS
         function startExplosion() {
             const container = document.getElementById('explosion-container');
-            container.innerHTML = ''; // Clear if re-entered
-            for(let i=1; i<=34; i++) {
+            container.innerHTML = ''; 
+            for(let i=1; i<=39; i++) {
                 const img = document.createElement('img');
                 img.src = i + ".jpg.jpeg"; 
                 img.className = 'memory-img';
                 
-                // Randomizing size and position
-                const size = Math.random() * 60 + 100; 
+                // Optimized size for 39 photos
+                const size = Math.random() * 40 + 90; 
                 img.style.width = size + 'px';
-                img.style.left = Math.random() * 75 + 'vw';
-                img.style.top = (Math.random() * 60 + 10) + 'vh';
-                img.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
                 
-                // Fallback if image name is wrong
+                // Random spread logic
+                img.style.left = Math.random() * 78 + 'vw';
+                img.style.top = (Math.random() * 65 + 10) + 'vh';
+                img.style.transform = `rotate(${Math.random() * 50 - 25}deg)`;
+                
                 img.onerror = function() { this.style.display = 'none'; };
-                
                 container.appendChild(img);
             }
         }
 
-        // STAGE 3: SCRATCH
+        // STAGE 3
         function initScratch() {
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 280; canvas.height = 380;
-            
             ctx.fillStyle = '#444';
             ctx.fillRect(0, 0, 280, 380);
             ctx.fillStyle = 'white';
@@ -162,12 +161,11 @@
                 ctx.arc(x, y, 35, 0, Math.PI * 2);
                 ctx.fill();
             };
-
             canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) scratch(e); });
             canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); }, {passive: false});
         }
 
-        // STAGE 5: BLOOM
+        // STAGE 5
         function bloomRose() {
             document.getElementById('rose-box').classList.add('rose-opened');
             document.getElementById('bloom-text').innerText = "It blooms only for you.";
