@@ -3,116 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Forever Rose</title>
+    <title>Rose Day | A Journey Through Time</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff4d6d; --secondary: #ff8fa3; --dark: #0f0c29; }
-        body, html { margin: 0; padding: 0; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; }
+        :root { --primary: #ff4d6d; --bg: #0a0a0a; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100%; }
         
-        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; animation: fadeIn 1s ease-in; }
-        .active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; text-align: center; }
+        .active { display: flex; animation: fadeIn 1s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Stage 1: Garden */
-        .garden-rose { position: absolute; cursor: pointer; font-size: 2.5rem; filter: drop-shadow(0 0 10px var(--primary)); transition: 0.3s; }
-        .garden-rose:hover { transform: scale(1.3); }
+        /* Stage 2: Photo Explosion */
+        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; }
+        .memory-img:hover { transform: scale(1.2) !important; z-index: 100; border-color: var(--primary); }
 
-        /* Stage 2: Photos */
-        .photo-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: rotate(var(--r)); margin: 10px; transition: 0.5s; cursor: pointer; }
-        .photo-card:hover { transform: rotate(0deg) scale(1.1); z-index: 10; border-color: var(--primary); }
-        .photo-card img { width: 180px; height: 180px; object-fit: cover; border-radius: 10px; }
-
-        /* Stage 3: The Unlock */
-        .heart-btn { font-size: 5rem; cursor: pointer; animation: pulse 1.5s infinite; transition: 0.3s; filter: drop-shadow(0 0 20px var(--primary)); }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        .unlock-progress { width: 200px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin-top: 20px; }
-        .progress-fill { width: 0%; height: 100%; background: var(--primary); border-radius: 5px; transition: 0.1s; }
+        /* Stage 4: CSS Animated Rose */
+        .rose-wrapper { position: relative; width: 100px; height: 100px; }
+        .petal { position: absolute; background: var(--primary); width: 50px; height: 80px; border-radius: 50% 50% 10% 10%; transform-origin: bottom center; transition: 2s ease-in-out; opacity: 0.8; border: 1px solid #a00; }
+        .rose-opened .petal:nth-child(1) { transform: rotate(30deg); }
+        .rose-opened .petal:nth-child(2) { transform: rotate(-30deg); }
+        .rose-opened .petal:nth-child(3) { transform: rotate(60deg); }
+        .rose-opened .petal:nth-child(4) { transform: rotate(-60deg); }
+        .rose-opened .petal:nth-child(5) { transform: rotate(0deg) scaleY(1.1); }
 
         /* Buttons */
-        .btn { margin-top: 30px; padding: 12px 35px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: var(--secondary); transform: translateY(-3px); }
+        .btn { padding: 15px 40px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="stage1" class="screen active">
-        <h1 style="text-shadow: 0 0 20px var(--primary);">The Garden of Secrets</h1>
-        <p>Somewhere among these roses is a portal to our memories...</p>
-        <div id="garden"></div>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">Hi [Her Name]...</h1>
+        <p>I built something special for you today.</p>
+        <button class="btn" onclick="nextStage(1, 2)">Enter Our World</button>
     </div>
 
     <div id="stage2" class="screen">
-        <h1>Moments That Bloom Forever</h1>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 800px;">
-            <div class="photo-card" style="--r: -5deg;"><img src="https://via.placeholder.com/180?text=Us+1" alt="Memory 1"><p>The First Day</p></div>
-            <div class="photo-card" style="--r: 3deg;"><img src="https://via.placeholder.com/180?text=Us+2" alt="Memory 2"><p>The Best Smile</p></div>
-            <div class="photo-card" style="--r: -2deg;"><img src="https://via.placeholder.com/180?text=Us+3" alt="Memory 3"><p>Our Favorite Spot</p></div>
-        </div>
-        <button class="btn" onclick="nextStage(2, 3)">Continue to the Heart</button>
+        <h2 style="position: relative; z-index: 1000;">Our Memories Bloom Everywhere</h2>
+        <div id="explosion-container"></div>
+        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 50px;">Look Deeper</button>
     </div>
 
     <div id="stage3" class="screen">
-        <h2 id="lock-title">Hold the Heart to Unlock</h2>
-        <div class="heart-btn" onmousedown="startUnlock()" onmouseup="stopUnlock()" ontouchstart="startUnlock()" ontouchend="stopUnlock()">❤️</div>
-        <div class="unlock-progress"><div id="fill" class="progress-fill"></div></div>
-        
-        <div id="final-reveal" style="display:none; text-align: center; padding: 20px; max-width: 400px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(10px);">
-            <h1 style="color: var(--primary);">Happy Rose Day!</h1>
-            <p>Every petal on this site represents a second I've spent thinking about you today. I might be miles away, but you're always here with me. ❤️</p>
-            <p style="font-size: 0.8rem; opacity: 0.7;">- Yours Forever</p>
+        <h2>Find the Rose that holds my heart</h2>
+        <div id="garden"></div>
+    </div>
+
+    <div id="stage4" class="screen">
+        <div id="rose-box" class="rose-wrapper">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        </div>
+        <h2 id="bloom-text" style="margin-top: 150px;">Watch it bloom...</h2>
+        <button id="bloom-btn" class="btn" onclick="bloomRose()">Click to Bloom</button>
+    </div>
+
+    <div id="stage5" class="screen">
+        <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--primary);">
+            <h1 style="color: var(--primary); font-family: 'Dancing Script';">Happy Rose Day!</h1>
+            <p>"No matter how many miles apart we are, my heart is always in your garden."</p>
+            <p><strong>I love you!</strong></p>
         </div>
     </div>
 
     <script>
-        // Stage 1 Garden Setup
-        const garden = document.getElementById('garden');
-        const roseCount = 50;
-        for(let i=0; i<roseCount; i++) {
-            const r = document.createElement('div');
-            r.className = 'garden-rose';
-            r.innerHTML = '🌹';
-            r.style.left = Math.random() * 95 + 'vw';
-            r.style.top = Math.random() * 90 + 'vh';
-            r.onclick = () => {
-                if(i === 25) { // The "Magic" Rose
-                    confetti({ particleCount: 200, spread: 100 });
-                    setTimeout(() => nextStage(1, 2), 1000);
-                } else {
-                    r.style.opacity = '0.2';
-                    r.style.pointerEvents = 'none';
-                }
-            };
-            garden.appendChild(r);
+        function nextStage(curr, next) {
+            document.getElementById('stage'+curr).classList.remove('active');
+            document.getElementById('stage'+next).classList.add('active');
+            if(next === 2) startExplosion();
+            if(next === 3) startGarden();
         }
 
-        function nextStage(current, next) {
-            document.getElementById('stage' + current).classList.remove('active');
-            document.getElementById('stage' + next).classList.add('active');
-        }
-
-        // Stage 3 Hold Logic
-        let holdTimer;
-        let progress = 0;
-        function startUnlock() {
-            holdTimer = setInterval(() => {
-                progress += 5;
-                document.getElementById('fill').style.width = progress + '%';
-                if(progress >= 100) {
-                    clearInterval(holdTimer);
-                    document.querySelector('.heart-btn').style.display = 'none';
-                    document.querySelector('.unlock-progress').style.display = 'none';
-                    document.getElementById('lock-title').style.display = 'none';
-                    document.getElementById('final-reveal').style.display = 'block';
-                    confetti({ particleCount: 300, spread: 160 });
-                }
-            }, 50);
-        }
-        function stopUnlock() {
-            clearInterval(holdTimer);
-            if(progress < 100) {
-                progress = 0;
-                document.getElementById('fill').style.width = '0%';
+        // STAGE 2: Explosion Logic
+        function startExplosion() {
+            const container = document.getElementById('explosion-container');
+            for(let i=0; i<25; i++) {
+                const img = document.createElement('img');
+                // Use your actual image URLs here!
+                img.src = `https://picsum.photos/200/200?random=${i}`;
+                img.className = 'memory-img';
+                const size = Math.random() * 150 + 100;
+                img.style.width = size + 'px';
+                img.style.height = size + 'px';
+                img.style.left = Math.random() * 90 + 'vw';
+                img.style.top = Math.random() * 80 + 'vh';
+                img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+                container.appendChild(img);
             }
+        }
+
+        // STAGE 3: Garden Logic
+        function startGarden() {
+            const garden = document.getElementById('garden');
+            for(let i=0; i<40; i++) {
+                const r = document.createElement('span');
+                r.innerHTML = '🌹';
+                r.style.position = 'absolute';
+                r.style.left = Math.random() * 95 + 'vw';
+                r.style.top = Math.random() * 90 + 'vh';
+                r.style.fontSize = '2rem';
+                r.style.cursor = 'pointer';
+                r.onclick = () => { if(i === 15) { confetti(); setTimeout(() => nextStage(3, 4), 1000); } else { r.style.opacity = '0.1'; } };
+                garden.appendChild(r);
+            }
+        }
+
+        // STAGE 4: Bloom Logic
+        function bloomRose() {
+            document.getElementById('rose-box').classList.add('rose-opened');
+            document.getElementById('bloom-text').innerText = "It's for you.";
+            document.getElementById('bloom-btn').style.display = 'none';
+            confetti({ particleCount: 150, spread: 70 });
+            setTimeout(() => nextStage(4, 5), 3000);
         }
     </script>
 </body>
