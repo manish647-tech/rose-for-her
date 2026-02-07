@@ -1,41 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>For My Favorite Person</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Journey For You</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: #1a1a1a; color: white; text-align: center; font-family: 'Arial', sans-serif; overflow: hidden; }
-        canvas { margin-top: 20px; filter: drop-shadow(0 0 20px #ff4d6d); }
-        h1 { margin-top: 50px; font-size: 2.5rem; color: #ff4d6d; }
-        .message { font-size: 1.2rem; margin-top: 20px; opacity: 0.8; }
+        body, html { margin: 0; padding: 0; background: #0b0b0b; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100%; }
+        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; transition: 0.5s; }
+        .active { display: flex; }
+        
+        /* Floating Roses */
+        .floating-rose { position: absolute; cursor: pointer; transition: transform 0.3s; font-size: 2rem; }
+        .floating-rose:hover { transform: scale(1.5) rotate(20deg); }
+        
+        /* Buttons */
+        .btn { padding: 15px 30px; background: #ff4d6d; border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px rgba(255, 77, 109, 0.5); }
+        
+        /* Stage 3 Surprise Box */
+        #secret-box { border: 2px solid #ff4d6d; padding: 40px; border-radius: 20px; background: rgba(255, 77, 109, 0.1); backdrop-filter: blur(10px); text-align: center; display: none; }
+        .decrypt-text { font-family: 'Courier New', monospace; color: #ff4d6d; }
     </style>
 </head>
 <body>
-    <h1>Happy Rose Day, [Her Name]! 🌹</h1>
-    <p class="message">A digital rose because real ones wilt, but my love for you won't.</p>
-    <canvas id="roseCanvas"></canvas>
+
+    <div id="stage1" class="screen active">
+        <h1>Welcome to Your Private Garden</h1>
+        <p>There are many roses, but only one holds the key. Find it.</p>
+        <div id="garden-container"></div>
+    </div>
+
+    <div id="stage2" class="screen">
+        <h2 id="memory-text">Tap the petals to remember...</h2>
+        <div id="petal-container"></div>
+        <button class="btn" onclick="goToStage3()" style="margin-top: 200px;">I'm Ready for the Surprise</button>
+    </div>
+
+    <div id="stage3" class="screen">
+        <div id="decrypt-container">
+            <h2 class="decrypt-text" id="status">INITIATING DECRYPTION...</h2>
+        </div>
+        <div id="secret-box">
+            <h1 style="color: #ff4d6d;">Happy Rose Day! 🌹</h1>
+            <p id="final-message">"Every mile between us is just a reason to love you more. You are my forever bloom."</p>
+            <p style="font-size: 0.8rem;">- [Your Name]</p>
+        </div>
+    </div>
 
     <script>
-        const canvas = document.getElementById('roseCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 400; canvas.height = 400;
-
-        function draw(t) {
-            ctx.clearRect(0, 0, 400, 400);
-            ctx.beginPath();
-            ctx.strokeStyle = '#ff4d6d';
-            ctx.lineWidth = 2;
-            for (let i = 0; i < 360; i++) {
-                let angle = i * Math.PI / 180;
-                // This formula creates the rose shape!
-                let r = 150 * Math.sin(5 * angle + t); 
-                let x = r * Math.cos(angle) + 200;
-                let y = r * Math.sin(angle) + 200;
-                ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            requestAnimationFrame(() => draw(t + 0.02));
+        // Setup Stage 1: Random Roses
+        const garden = document.getElementById('garden-container');
+        for(let i=0; i<40; i++) {
+            const rose = document.createElement('div');
+            rose.className = 'floating-rose';
+            rose.innerHTML = '🌹';
+            rose.style.left = Math.random() * 90 + 'vw';
+            rose.style.top = Math.random() * 90 + 'vh';
+            rose.onclick = () => {
+                if(i === 7) { // The 7th rose is the secret one!
+                    confetti();
+                    setTimeout(() => { document.getElementById('stage1').classList.remove('active');
+                    document.getElementById('stage2').classList.add('active'); }, 1000);
+                } else {
+                    rose.style.opacity = '0.3';
+                }
+            };
+            garden.appendChild(rose);
         }
-        draw(0);
+
+        // Setup Stage 2: Memories
+        const memories = ["Our first call", "The way you laugh", "That one song", "Your favorite smile", "Counting days to see you"];
+        const petalBox = document.getElementById('petal-container');
+        memories.forEach(m => {
+            const mRose = document.createElement('span');
+            mRose.innerHTML = ' 🌸 ';
+            mRose.style.fontSize = '3rem';
+            mRose.style.cursor = 'pointer';
+            mRose.onclick = () => { document.getElementById('memory-text').innerText = m; confetti(); };
+            petalBox.appendChild(mRose);
+        });
+
+        // Stage 3 Logic
+        function goToStage3() {
+            document.getElementById('stage2').classList.remove('active');
+            document.getElementById('stage3').classList.add('active');
+            let i = 0;
+            const status = document.getElementById('status');
+            const interval = setInterval(() => {
+                const logs = ["ACCESSING HEART_CORE...", "BYPASSING DISTANCE_WALL...", "DECRYPTING FEELINGS...", "SUCCESS!"];
+                status.innerText = logs[i];
+                i++;
+                if(i > 3) {
+                    clearInterval(interval);
+                    status.style.display = 'none';
+                    document.getElementById('secret-box').style.display = 'block';
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
