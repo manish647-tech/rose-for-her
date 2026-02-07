@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rose Day | A Journey Through Time</title>
+    <title>Rose Day | For My Bannu</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
@@ -15,18 +15,18 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Stage 1: Golden Rose Garden */
-        .rose-item { position: absolute; cursor: pointer; font-size: 2rem; transition: 0.3s; }
+        .rose-item { position: absolute; cursor: pointer; font-size: 2rem; transition: 0.3s; user-select: none; }
 
-        /* Stage 2: Photo Explosion */
-        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; background: white; padding: 5px 5px 15px 5px; }
-        .memory-img:hover { transform: scale(1.2) !important; z-index: 100; border-color: var(--primary); }
+        /* Stage 2: Photo Explosion (34 Photos) */
+        .memory-img { position: absolute; border: 3px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px; object-fit: cover; transition: 0.5s; z-index: 5; background: white; padding: 5px 5px 15px 5px; max-width: 150px; }
+        .memory-img:hover { transform: scale(1.4) !important; z-index: 100; border-color: var(--primary); }
 
         /* Stage 3: Scratch Reveal */
         #scratch-container { position: relative; width: 280px; height: 380px; border: 3px solid var(--primary); border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px var(--primary); }
         #scratch-canvas { position: absolute; top: 0; left: 0; z-index: 2; cursor: crosshair; }
         .hidden-photo { width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
-        /* Stage 5: Enhanced Multi-Petal Rose */
+        /* Stage 5: Multi-Petal Rose */
         .rose-wrapper { position: relative; width: 120px; height: 120px; margin-bottom: 20px; }
         .petal { position: absolute; left: 50%; bottom: 0; background: linear-gradient(var(--primary), #a00); width: 50px; height: 90px; border-radius: 50% 50% 20% 20%; transform-origin: bottom center; transition: 2.5s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; border: 1px solid rgba(0,0,0,0.2); }
         .rose-opened .petal { opacity: 0.9; }
@@ -39,27 +39,27 @@
         .rose-opened .p7 { transform: translateX(-50%) scale(1.1); z-index: 10; }
 
         /* Buttons */
-        .btn { padding: 15px 40px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 0 20px var(--primary); margin-top: 20px; }
+        .btn { padding: 12px 30px; background: var(--primary); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; z-index: 1001; box-shadow: 0 0 20px var(--primary); margin-top: 20px; font-family: 'Poppins'; }
     </style>
 </head>
 <body>
 
     <div id="stage1" class="screen active">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">Find the Golden Rose</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3rem; margin-bottom: 10px;">Find the Golden Rose</h1>
         <p>One of these roses holds the key to my heart...</p>
         <div id="garden"></div>
     </div>
 
     <div id="stage2" class="screen">
-        <h2 style="position: relative; z-index: 1000;">Our Memories Bloom Everywhere</h2>
+        <h2 style="position: relative; z-index: 1000; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 10px;">Our Memories Bloom Everywhere</h2>
         <div id="explosion-container"></div>
-        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 50px;">Look Deeper</button>
+        <button class="btn" onclick="nextStage(2, 3)" style="position: absolute; bottom: 40px;">Look Deeper</button>
     </div>
 
     <div id="stage3" class="screen">
         <h2>Wipe away the distance...</h2>
         <div id="scratch-container">
-            <img src="main.jpg.jpeg" class="hidden-photo">
+            <img src="main.jpg.jpeg" class="hidden-photo" alt="Main Memory">
             <canvas id="scratch-canvas"></canvas>
         </div>
         <button class="btn" onclick="nextStage(3, 4)" style="margin-top: 20px;">I Found You</button>
@@ -104,28 +104,38 @@
             const r = document.createElement('span');
             r.innerHTML = '🌹';
             r.className = 'rose-item';
-            if(i === 18) r.style.filter = 'drop-shadow(0 0 12px gold)';
+            if(i === 18) r.style.filter = 'drop-shadow(0 0 12px gold) brightness(1.5)';
             r.style.left = Math.random() * 90 + 'vw';
             r.style.top = Math.random() * 80 + 'vh';
             r.onclick = () => {
-                if(i === 18) { confetti(); setTimeout(() => nextStage(1, 2), 1000); }
-                else { r.style.opacity = '0.1'; }
+                if(i === 18) { 
+                    confetti({ particleCount: 150, origin: { y: 0.6 } }); 
+                    setTimeout(() => nextStage(1, 2), 1000); 
+                }
+                else { r.style.opacity = '0.1'; r.style.pointerEvents = 'none'; }
             };
             garden.appendChild(r);
         }
 
-        // STAGE 2: 31 PHOTOS
+        // STAGE 2: 34 PHOTOS
         function startExplosion() {
             const container = document.getElementById('explosion-container');
-            for(let i=1; i<=31; i++) {
+            container.innerHTML = ''; // Clear if re-entered
+            for(let i=1; i<=34; i++) {
                 const img = document.createElement('img');
                 img.src = i + ".jpg.jpeg"; 
                 img.className = 'memory-img';
-                const size = Math.random() * 120 + 100;
+                
+                // Randomizing size and position
+                const size = Math.random() * 60 + 100; 
                 img.style.width = size + 'px';
-                img.style.left = Math.random() * 85 + 'vw';
-                img.style.top = Math.random() * 75 + 'vh';
-                img.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+                img.style.left = Math.random() * 75 + 'vw';
+                img.style.top = (Math.random() * 60 + 10) + 'vh';
+                img.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+                
+                // Fallback if image name is wrong
+                img.onerror = function() { this.style.display = 'none'; };
+                
                 container.appendChild(img);
             }
         }
@@ -135,12 +145,13 @@
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 280; canvas.height = 380;
-            ctx.fillStyle = '#888';
+            
+            ctx.fillStyle = '#444';
             ctx.fillRect(0, 0, 280, 380);
             ctx.fillStyle = 'white';
-            ctx.font = '20px Poppins';
+            ctx.font = '18px Poppins';
             ctx.textAlign = 'center';
-            ctx.fillText('Scratch with Love ❤️', 140, 190);
+            ctx.fillText('Scratch to Reveal ❤️', 140, 190);
 
             const scratch = (e) => {
                 const rect = canvas.getBoundingClientRect();
@@ -151,16 +162,17 @@
                 ctx.arc(x, y, 35, 0, Math.PI * 2);
                 ctx.fill();
             };
-            canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('touchmove', scratch);
+
+            canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) scratch(e); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); }, {passive: false});
         }
 
         // STAGE 5: BLOOM
         function bloomRose() {
             document.getElementById('rose-box').classList.add('rose-opened');
-            document.getElementById('bloom-text').innerText = "It blooms for you.";
+            document.getElementById('bloom-text').innerText = "It blooms only for you.";
             document.getElementById('bloom-btn').style.display = 'none';
-            confetti({ particleCount: 200, spread: 80 });
+            confetti({ particleCount: 200, spread: 80, colors: ['#ff4d6d', '#ffffff', '#ff0000'] });
             setTimeout(() => nextStage(5, 6), 4000);
         }
     </script>
